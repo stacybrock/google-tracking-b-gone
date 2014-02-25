@@ -1,13 +1,13 @@
 // Google Tracking-B-Gone
-// version 2.1 
-// Release Date: 2010-11-27
-// http://sbdev.org
+// version 2.2
+// Release Date: 2014-02-25
+// http://userscripts.org/scripts/upload/47300
 //
 // ===== INSTRUCTIONS =====
 //
 // This is a Greasemonkey user script.
 //
-// To use this script, get Greasemonkey: http://greasemonkey.mozdev.org/
+// To use this script, get Greasemonkey: http://www.greasespot.net
 // After you've installed it, come back to this page. A dialog box will
 // appear asking you if you want to install this script.
 //
@@ -18,18 +18,20 @@
 // 
 // ==UserScript==
 // @name           Google Tracking-B-Gone
-// @namespace      http://sbdev.org
+// @namespace      http://notoriety.org
 // @description    Strips click tracking from Google search results
 //
 // @include        http://*.google.co*
 // @include        https://*.google.co*
+//
+// @grant          none
 // ==/UserScript==
 
 doIt(); // make sure we run at least once, regardless of search results page version
 doRTR(); // strip tracking from inital batch of real-time search results
 
 document.addEventListener('DOMAttrModified', function (event) {
-  if (event.target.id == 'foot') {
+  if (event.target.id == 'gsr' || event.target.id == 'foot') {
     doIt();
   }
 }, false);
