@@ -1,6 +1,6 @@
 // Google Tracking-B-Gone
-// version 2.2
-// Release Date: 2014-02-25
+// version 2.2.1
+// Release Date: 2014-02-28
 // http://userscripts.org/scripts/upload/47300
 //
 // ===== INSTRUCTIONS =====
@@ -19,10 +19,11 @@
 // ==UserScript==
 // @name           Google Tracking-B-Gone
 // @namespace      http://notoriety.org
+// @version        2.2.1
 // @description    Strips click tracking from Google search results
 //
-// @include        http://*.google.co*
-// @include        https://*.google.co*
+// @include        http://*.google.*
+// @include        https://*.google.*
 //
 // @grant          none
 // ==/UserScript==
