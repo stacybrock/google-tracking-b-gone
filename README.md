@@ -6,9 +6,9 @@ A greasemonkey script to strip click tracking from Google search results.
 
 Google's search results page wraps a gateway (i.e. tracking) URL around the links to individual results. An annoying side effect is that you can't copy and paste links directly out of search results. This userscript fixes that problem.
 
-## userscripts.org
+## greasyfork.org
 
-http://userscripts.org/scripts/show/47300
+https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
 
 ## Changelog
 
