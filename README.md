@@ -12,6 +12,7 @@ https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
 
 ## Changelog
 
+* 2014.02.28 - version 2.2.1 - Attempt to fix a rare unreproducible bug; add @version and update @include.
 * 2010.11.27 - version 2.1 - Added support for Google SSL. (Thanks to anonymous for the bug report.)
 * 2010.11.24 - version 2.0 - Rewrite in response to search result page changes. (Thanks to rimmington for bug report.)
 * 2010.06.27 - version 1.7 - Fixed bug with URL encoded links. (Thanks to Yomi for the bug report)
