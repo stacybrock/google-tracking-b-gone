@@ -1,7 +1,7 @@
 // Google Tracking-B-Gone
-// version 2.2.1
-// Release Date: 2014-02-28
-// http://userscripts.org/scripts/upload/47300
+// version 2.3
+// Release Date: 2016-02-19
+// https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
 //
 // ===== INSTRUCTIONS =====
 //
@@ -19,31 +19,36 @@
 // ==UserScript==
 // @name           Google Tracking-B-Gone
 // @namespace      http://notoriety.org
-// @version        2.2.1
+// @version        2.3
 // @description    Strips click tracking from Google search results
 //
-// @include        http://*.google.*
-// @include        https://*.google.*
+// @include        http://www.google.*
+// @include        https://www.google.*
 //
 // @grant          none
 // ==/UserScript==
 
-doIt(); // make sure we run at least once, regardless of search results page version
-doRTR(); // strip tracking from inital batch of real-time search results
+var debug = false;
 
-document.addEventListener('DOMAttrModified', function (event) {
-  if (event.target.id == 'gsr' || event.target.id == 'foot') {
-    doIt();
-  }
-}, false);
+if (debug) { console.log("Google Tracking-B-Gone initialized."); }
 
-document.addEventListener('DOMNodeInserted', function (event) {
-  if (event.target.parentNode.id == 'rtr') {
-    doRTR(event.target);
-  }
-}, false);
+var divMain = document.querySelector('div#main');
+var sfdiv = document.querySelector('div#sfdiv');
+
+var changeObserver = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    var resultsDiv = document.querySelector('#ires');
+    if (resultsDiv) {
+      doIt();
+    }
+  });
+});
+changeObserver.observe(divMain, { attributes: true, childList: true, characterData: true });
+changeObserver.observe(sfdiv, { attributes: true, childList: true, characterData: true });
+
 
 function doIt() {
+  if (debug) { console.log("doIt() called..."); }
   var resultLinks = $x("//a[@onmousedown]", XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
   resultLinks.forEach(function(link) {  // loop over links
     if (link.getAttribute('onmousedown')) {
@@ -59,28 +64,12 @@ function doIt() {
       if (matches != null) {
         link.href = unescape(matches[2]);
       }
+    } else if ((/pdf$/i).test(oldLink)) {
+      link.href = oldLink;
     }
   });
 }
 
-function doRTR() {
-  if (arguments[0] == undefined) {
-    // get all real-time result links
-    var resultLinks = $x("//div[@id='rtr']//a", XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
-  } else {
-    // get all links from the current real-time result
-    var resultLinks = $x(arguments[0], "//a", XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
-  }
-  resultLinks.forEach(function(link) {  // loop over every link
-    var oldLink = link.href;
-    if (/^http:\/\/www.google.co/.test(oldLink) || /^https:\/\/encrypted.google.co/.test(oldLink)) {
-      var matches = /url\?(url|q)=(.+?)&/.exec(oldLink);
-      if (matches != null) {
-        link.href = unescape(matches[2]);
-      }
-    }
-  });
-}
 
 // XPath helper, from
 // http://wiki.greasespot.net/Code_snippets
