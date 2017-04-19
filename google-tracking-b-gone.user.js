@@ -1,7 +1,8 @@
 // Google Tracking-B-Gone
-// version 2.3
-// Release Date: 2016-02-19
+// version 2.4
+// Release Date: 2017-04-19
 // https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
+// https://github.com/stacybrock/google-tracking-b-gone
 //
 // ===== INSTRUCTIONS =====
 //
@@ -15,11 +16,11 @@
 // "Google Tracking-B-Gone" from the list on the left, and click
 // Uninstall.
 //
-// 
+//
 // ==UserScript==
 // @name           Google Tracking-B-Gone
 // @namespace      http://notoriety.org
-// @version        2.3
+// @version        2.4
 // @description    Strips click tracking from Google search results
 //
 // @include        http://www.google.*
@@ -32,19 +33,15 @@ var debug = false;
 
 if (debug) { console.log("Google Tracking-B-Gone initialized."); }
 
-var divMain = document.querySelector('div#main');
-var sfdiv = document.querySelector('div#sfdiv');
-
 var changeObserver = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
-    var resultsDiv = document.querySelector('#ires');
-    if (resultsDiv) {
+    if ((mutation.target.nodeName == 'BODY' && mutation.target.attributes.getNamedItem('id').value == 'gsr') ||
+        (mutation.target.nodeName == 'DIV' && mutation.target.attributes.getNamedItem('id').value == 'taw')) {
       doIt();
     }
   });
 });
-changeObserver.observe(divMain, { attributes: true, childList: true, characterData: true });
-changeObserver.observe(sfdiv, { attributes: true, childList: true, characterData: true });
+changeObserver.observe(document.documentElement, { childList: true, subtree: true });
 
 
 function doIt() {
@@ -72,41 +69,54 @@ function doIt() {
 
 
 // XPath helper, from
-// http://wiki.greasespot.net/Code_snippets
+// https://wiki.greasespot.net/XPath_Helper
 function $x() {
-  var x='',          // default values
-      node=document,
-      type=0,
-      fix=true,
-      i=0,
-      toAr=function(xp){      // XPathResult to array
-	var final=[], next;
-	while(next=xp.iterateNext())
-	  final.push(next);
-	return final
-      },
-      cur;
-  while (cur=arguments[i++])      // argument handler
-    switch(typeof cur) {
-      case "string":x+=(x=='') ? cur : " | " + cur;continue;
-      case "number":type=cur;continue;
-      case "object":node=cur;continue;
-      case "boolean":fix=cur;continue;
+  var x='';
+  var node=document;
+  var type=0;
+  var fix=true;
+  var i=0;
+  var cur;
+
+  function toArray(xp) {
+    var final=[], next;
+    while (next=xp.iterateNext()) {
+      final.push(next);
     }
-  if (fix) {      // array conversion logic
+    return final;
+  }
+
+  while (cur=arguments[i++]) {
+    switch (typeof cur) {
+      case "string": x+=(x=='') ? cur : " | " + cur; continue;
+      case "number": type=cur; continue;
+      case "object": node=cur; continue;
+      case "boolean": fix=cur; continue;
+    }
+  }
+
+  if (fix) {
     if (type==6) type=4;
     if (type==7) type=5;
   }
-  if (!/^\//.test(x)) x="//"+x;            // selection mistake helper
-    if (node!=document && !/^\./.test(x)) x="."+x;  // context mistake helper
-  var temp=document.evaluate(x,node,null,type,null); //evaluate!
-  if (fix)
-    switch(type) {                              // automatically return special type
-      case 1:return temp.numberValue;
-      case 2:return temp.stringValue;
-      case 3:return temp.booleanValue;
-      case 8:return temp.singleNodeValue;
-      case 9:return temp.singleNodeValue;
+
+  // selection mistake helper
+  if (!/^\//.test(x)) x="//"+x;
+
+  // context mistake helper
+  if (node!=document && !/^\./.test(x)) x="."+x;
+
+  var result=document.evaluate(x, node, null, type, null);
+  if (fix) {
+    // automatically return special type
+    switch (type) {
+      case 1: return result.numberValue;
+      case 2: return result.stringValue;
+      case 3: return result.booleanValue;
+      case 8:
+      case 9: return result.singleNodeValue;
     }
-  return fix ? toAr(temp) : temp;
+  }
+
+  return fix ? toArray(result) : result;
 }

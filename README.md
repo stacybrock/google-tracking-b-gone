@@ -10,8 +10,15 @@ Google's search results page wraps a gateway (i.e. tracking) URL around the link
 
 https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
 
+## Source Code and Bug Reports
+
+https://github.com/stacybrock/google-tracking-b-gone
+
+Please report any issues via the [GitHub issue tracker](https://github.com/stacybrock/google-tracking-b-gone/issues).
+
 ## Changelog
 
+* 2017.04.19 - version 2.4 - Updated due to changes to the search results page. (Thanks to Nothing4You for the bug report.)
 * 2016.02.19 - version 2.3 - Improved handling of incremental search results; streamlined script performance; fixed borked PDF results (thanks Connor Behan for the bug report); removed code for (now defunct) real-time search.
 * 2014.02.28 - version 2.2.1 - Attempt to fix a rare unreproducible bug; add @version and update @include.
 * 2010.11.27 - version 2.1 - Added support for Google SSL. (Thanks to anonymous for the bug report.)
