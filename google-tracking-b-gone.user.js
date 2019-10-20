@@ -1,6 +1,6 @@
 // Google Tracking-B-Gone
-// version 3.0
-// Release Date: 2019-03-11
+// version 3.1
+// Release Date: 2019-10-20
 // https://greasyfork.org/en/scripts/1810-google-tracking-b-gone
 // https://github.com/stacybrock/google-tracking-b-gone
 //
@@ -20,7 +20,7 @@
 // ==UserScript==
 // @name           Google Tracking-B-Gone
 // @namespace      http://notoriety.org
-// @version        3.0
+// @version        3.1
 // @description    Strips click tracking from Google search results
 //
 // @include        http://www.google.*
