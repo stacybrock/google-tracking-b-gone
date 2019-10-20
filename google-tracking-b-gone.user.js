@@ -60,8 +60,13 @@ var blockEvent = function (event) {
   event.stopPropagation();
 };
 
+var blockEvent2 = function (event) {
+  this.getAttribute('role') !== 'button' && event.stopPropagation();
+};
+
 function cleanLink(link) {
   debug && console.log("cleanLink() called...");
   link.onmousedown = link.onmouseup = link.onmouseenter = link.onmousemove =
-      link.ondbclick = link.onclick = link.oncontextmenu = blockEvent;
+      link.ondbclick = link.oncontextmenu = blockEvent;
+  link.onclick = blockEvent2;
 }
